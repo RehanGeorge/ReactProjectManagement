@@ -18,17 +18,32 @@ function App() {
     });
   }
 
+  function handleAddData({ title, description, dueDate }) {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        projects: [...prevState.projects, {
+          id: projectsState.projects.length + 1,
+          title,
+          description,
+          dueDate
+        }]
+      }
+    })
+    console.log(projectsState.projects);
+  }
+
   let content;
   
   if(projectsState.selectedProjectId === null) {
-    content = <NewProject />
+    content = <NewProject onSave={handleAddData}/>
   } else {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <Sidebar onStartAddProject={handleStartAddProject} />
+      <Sidebar onStartAddProject={handleStartAddProject} projects={projectsState.projects} />
       {content}
     </main>
   );
